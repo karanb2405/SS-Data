@@ -23,10 +23,10 @@
       --violet: #a88cff;
       --card: rgba(11, 29, 56, 0.76);
       --card-2: rgba(16, 42, 77, 0.74);
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --shadow: 0 18px 54px rgba(0, 0, 0, 0.32);
       --radius: 8px;
       --max: 1240px;
-      --header-h: 76px;
+      --header-h: 58px;
     }
 
     * {
@@ -55,6 +55,39 @@
 
     body.presentation-mode .slide {
       min-height: calc(100vh - var(--header-h));
+      padding: 24px 0 70px;
+    }
+
+    body.presentation-mode h1 {
+      font-size: clamp(2rem, 4vw, 4.25rem);
+    }
+
+    body.presentation-mode h2 {
+      font-size: clamp(1.72rem, 3vw, 3.25rem);
+    }
+
+    body.presentation-mode .lead {
+      font-size: clamp(0.95rem, 1.25vw, 1.18rem);
+      margin-top: 12px;
+    }
+
+    body.presentation-mode .grid {
+      margin-top: 18px;
+      gap: 12px;
+    }
+
+    body.presentation-mode .card {
+      min-height: 126px;
+      padding: 16px;
+    }
+
+    body.presentation-mode .talk-track {
+      margin-top: 18px;
+      padding: 14px 16px;
+    }
+
+    body.presentation-mode .talk-track li {
+      margin: 4px 0;
     }
 
     a {
@@ -78,30 +111,30 @@
       margin: 0 auto;
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 12px;
     }
 
     .brand {
-      min-width: 210px;
+      min-width: 178px;
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
 
     .brand strong {
-      font-size: 0.94rem;
+      font-size: 0.82rem;
       letter-spacing: 0;
     }
 
     .brand span {
       color: var(--muted);
-      font-size: 0.76rem;
+      font-size: 0.68rem;
     }
 
     .nav {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex: 1;
       overflow-x: auto;
       scrollbar-width: none;
@@ -113,11 +146,11 @@
 
     .nav a {
       flex: 0 0 auto;
-      padding: 9px 10px;
+      padding: 7px 8px;
       border: 1px solid transparent;
       border-radius: 999px;
       color: var(--muted);
-      font-size: 0.78rem;
+      font-size: 0.7rem;
       white-space: nowrap;
       transition: 0.2s ease;
     }
@@ -137,12 +170,12 @@
 
     .progress-pill {
       min-width: 56px;
-      padding: 8px 10px;
+      padding: 6px 8px;
       border-radius: 999px;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.05);
       color: var(--soft);
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       text-align: center;
     }
 
@@ -151,7 +184,7 @@
       align-items: center;
       gap: 8px;
       color: var(--soft);
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       white-space: nowrap;
       cursor: pointer;
       user-select: none;
@@ -164,8 +197,8 @@
     }
 
     .switch {
-      width: 42px;
-      height: 24px;
+      width: 38px;
+      height: 22px;
       padding: 3px;
       border-radius: 999px;
       border: 1px solid var(--line-strong);
@@ -176,8 +209,8 @@
     .switch::after {
       content: "";
       display: block;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: var(--muted);
       transition: 0.2s ease;
@@ -188,7 +221,7 @@
     }
 
     .toggle input:checked + .switch::after {
-      transform: translateX(18px);
+      transform: translateX(16px);
       background: #06101f;
     }
 
@@ -198,7 +231,7 @@
 
     .slide {
       min-height: calc(100vh - var(--header-h));
-      padding: 72px 0;
+      padding: 36px 0 74px;
       scroll-margin-top: var(--header-h);
       border-bottom: 1px solid rgba(171, 199, 233, 0.08);
     }
@@ -212,13 +245,13 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 18px;
-      padding: 8px 12px;
+      margin-bottom: 12px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.05);
       color: var(--cyan);
-      font-size: 0.78rem;
+      font-size: 0.66rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -233,32 +266,32 @@
 
     h1 {
       max-width: 1080px;
-      font-size: clamp(2.8rem, 6.2vw, 6.8rem);
-      line-height: 0.96;
+      font-size: clamp(2.15rem, 4.55vw, 4.95rem);
+      line-height: 1.02;
     }
 
     h2 {
       max-width: 980px;
-      font-size: clamp(2.2rem, 4.4vw, 4.9rem);
-      line-height: 1;
+      font-size: clamp(1.85rem, 3.25vw, 3.65rem);
+      line-height: 1.04;
     }
 
     h3 {
-      font-size: clamp(1.14rem, 1.4vw, 1.38rem);
+      font-size: clamp(1rem, 1.05vw, 1.16rem);
       line-height: 1.2;
     }
 
     .lead {
       max-width: 1040px;
-      margin: 22px 0 0;
+      margin: 14px 0 0;
       color: var(--soft);
-      font-size: clamp(1.08rem, 1.8vw, 1.55rem);
-      line-height: 1.45;
+      font-size: clamp(0.98rem, 1.32vw, 1.25rem);
+      line-height: 1.36;
     }
 
     .executive-message {
-      margin: 28px 0;
-      padding: 22px;
+      margin: 18px 0;
+      padding: 16px 18px;
       border-radius: var(--radius);
       border: 1px solid rgba(78, 228, 216, 0.32);
       background:
@@ -266,25 +299,25 @@
         rgba(8, 24, 45, 0.78);
       box-shadow: var(--shadow);
       color: #effcff;
-      font-size: clamp(1.05rem, 1.55vw, 1.35rem);
-      line-height: 1.48;
+      font-size: clamp(0.98rem, 1.18vw, 1.16rem);
+      line-height: 1.38;
     }
 
     .statement {
       border-left: 4px solid var(--cyan);
-      padding: 18px 22px;
-      margin: 22px 0 0;
+      padding: 14px 18px;
+      margin: 16px 0 0;
       color: #e8f7ff;
       background: rgba(255, 255, 255, 0.055);
       border-radius: 0 var(--radius) var(--radius) 0;
-      font-size: clamp(1.02rem, 1.35vw, 1.22rem);
-      line-height: 1.5;
+      font-size: clamp(0.96rem, 1.08vw, 1.08rem);
+      line-height: 1.4;
     }
 
     .grid {
       display: grid;
-      gap: 16px;
-      margin-top: 28px;
+      gap: 12px;
+      margin-top: 18px;
     }
 
     .grid-4 {
@@ -305,12 +338,12 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16);
     }
 
     .card {
-      min-height: 180px;
-      padding: 22px;
+      min-height: 142px;
+      padding: 16px;
       position: relative;
       overflow: hidden;
     }
@@ -325,38 +358,38 @@
     }
 
     .card p {
-      margin: 13px 0 0;
+      margin: 9px 0 0;
       color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.5;
+      font-size: 0.86rem;
+      line-height: 1.38;
     }
 
     .tag {
       display: inline-flex;
-      margin-bottom: 12px;
-      padding: 6px 9px;
+      margin-bottom: 8px;
+      padding: 5px 8px;
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--cyan);
       background: rgba(78, 228, 216, 0.08);
-      font-size: 0.72rem;
+      font-size: 0.64rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
 
     .talk-track {
-      margin-top: 28px;
-      padding: 20px 22px;
+      margin-top: 18px;
+      padding: 14px 18px;
       background:
         linear-gradient(135deg, rgba(244, 201, 93, 0.12), rgba(78, 228, 216, 0.08)),
         rgba(11, 29, 56, 0.72);
     }
 
     .talk-track h3 {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--gold);
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     ul {
@@ -365,21 +398,21 @@
     }
 
     li {
-      margin: 7px 0;
+      margin: 4px 0;
       color: var(--soft);
-      line-height: 1.42;
+      line-height: 1.32;
     }
 
     .transition {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: stretch;
-      gap: 18px;
-      margin-top: 34px;
+      gap: 12px;
+      margin-top: 20px;
     }
 
     .state-box {
-      padding: 24px;
+      padding: 16px;
       border-radius: var(--radius);
       border: 1px solid var(--line);
       background: var(--card);
@@ -387,9 +420,9 @@
 
     .state-box strong {
       display: block;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       color: var(--cyan);
-      font-size: 1.1rem;
+      font-size: 0.98rem;
     }
 
     .arrow {
@@ -397,14 +430,14 @@
       align-items: center;
       justify-content: center;
       color: var(--cyan);
-      font-size: 2rem;
+      font-size: 1.55rem;
     }
 
     .tabs-shell {
-      margin-top: 30px;
+      margin-top: 18px;
       display: grid;
-      grid-template-columns: 270px 1fr;
-      gap: 18px;
+      grid-template-columns: 230px 1fr;
+      gap: 12px;
       align-items: start;
     }
 
@@ -418,7 +451,7 @@
 
     .tab-button {
       width: 100%;
-      padding: 15px 14px;
+      padding: 11px 12px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       color: var(--soft);
@@ -438,7 +471,7 @@
 
     .tab-panel {
       display: none;
-      padding: 22px;
+      padding: 16px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(8, 24, 45, 0.76);
@@ -452,12 +485,16 @@
     .content-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .tab-panel .content-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .mini-block {
-      padding: 16px;
+      padding: 12px;
       border-radius: var(--radius);
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.04);
@@ -465,19 +502,25 @@
 
     .mini-block strong {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: var(--cyan);
     }
 
     .mini-block p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.48;
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .tab-panel .mini-block p {
+      font-size: 0.76rem;
+      line-height: 1.28;
     }
 
     .diagram {
-      margin-top: 18px;
-      padding: 18px;
+      margin-top: 12px;
+      padding: 12px;
       border-radius: var(--radius);
       border: 1px solid var(--line);
       background:
@@ -489,7 +532,7 @@
     .flow {
       display: grid;
       grid-template-columns: repeat(5, minmax(138px, 1fr));
-      gap: 12px;
+      gap: 8px;
       min-width: 720px;
       align-items: stretch;
     }
@@ -501,8 +544,8 @@
 
     .flow-box {
       position: relative;
-      min-height: 88px;
-      padding: 15px 14px;
+      min-height: 58px;
+      padding: 10px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -512,32 +555,33 @@
       background: rgba(16, 42, 77, 0.84);
       color: #eef9ff;
       font-weight: 700;
-      line-height: 1.25;
+      font-size: 0.82rem;
+      line-height: 1.2;
     }
 
     .flow-box:not(:last-child)::after {
       content: ">";
       position: absolute;
-      right: -12px;
+      right: -9px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--cyan);
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       z-index: 2;
     }
 
     .layer-diagram {
-      margin-top: 32px;
+      margin-top: 20px;
       display: grid;
-      gap: 12px;
+      gap: 8px;
     }
 
     .layer {
       display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 16px;
+      grid-template-columns: 220px 1fr;
+      gap: 12px;
       align-items: center;
-      padding: 18px;
+      padding: 13px 16px;
       border-radius: var(--radius);
       border: 1px solid var(--line);
       background: linear-gradient(90deg, rgba(59, 167, 255, 0.12), rgba(255, 255, 255, 0.04));
@@ -546,12 +590,13 @@
     .layer-title {
       font-weight: 800;
       color: #ffffff;
-      font-size: 1.08rem;
+      font-size: 0.98rem;
     }
 
     .layer-body {
       color: var(--soft);
-      line-height: 1.48;
+      font-size: 0.88rem;
+      line-height: 1.34;
     }
 
     .cross-cut {
@@ -560,17 +605,17 @@
     }
 
     .timeline {
-      margin-top: 32px;
+      margin-top: 22px;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: 10px;
       counter-reset: phase;
     }
 
     .phase {
       position: relative;
-      min-height: 250px;
-      padding: 22px;
+      min-height: 196px;
+      padding: 16px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(11, 29, 56, 0.78);
@@ -582,9 +627,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
-      margin-bottom: 16px;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 10px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--blue), var(--cyan));
       color: #04101f;
@@ -592,28 +637,29 @@
     }
 
     .phase h3 {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .question-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 28px;
+      gap: 10px;
+      margin-top: 18px;
       counter-reset: q;
     }
 
     .question {
       display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 12px;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
       align-items: start;
-      padding: 18px;
+      padding: 12px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(255, 255, 255, 0.045);
       color: var(--soft);
-      line-height: 1.42;
+      font-size: 0.9rem;
+      line-height: 1.32;
     }
 
     .question::before {
@@ -622,8 +668,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: rgba(78, 228, 216, 0.14);
       color: var(--cyan);
@@ -631,8 +677,8 @@
     }
 
     .cta {
-      margin-top: 20px;
-      padding: 22px;
+      margin-top: 14px;
+      padding: 16px;
       border-radius: var(--radius);
       border: 1px solid rgba(78, 228, 216, 0.38);
       background: linear-gradient(135deg, rgba(59, 167, 255, 0.16), rgba(78, 228, 216, 0.1));
@@ -642,21 +688,21 @@
       display: block;
       margin-bottom: 8px;
       color: #ffffff;
-      font-size: 1.15rem;
+      font-size: 1rem;
     }
 
     .slide-nav {
       position: fixed;
-      right: 22px;
-      bottom: 22px;
+      right: 16px;
+      bottom: 16px;
       z-index: 45;
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
 
     .nav-btn {
-      min-width: 104px;
-      padding: 12px 16px;
+      min-width: 92px;
+      padding: 9px 13px;
       border: 1px solid var(--line-strong);
       border-radius: 999px;
       background: rgba(5, 11, 24, 0.82);
@@ -712,6 +758,10 @@
       .tab-list {
         position: static;
         display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tab-panel .content-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
@@ -774,7 +824,7 @@
     }
   </style>
 </head>
-<body>
+<body class="presentation-mode">
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#opening" aria-label="Go to opening">
@@ -794,7 +844,7 @@
       <div class="controls">
         <div class="progress-pill" id="progress">1 / 8</div>
         <label class="toggle">
-          <input type="checkbox" id="presentationToggle" />
+          <input type="checkbox" id="presentationToggle" checked />
           <span class="switch" aria-hidden="true"></span>
           <span>Presentation Mode</span>
         </label>
@@ -944,8 +994,8 @@
               <div class="content-grid">
                 <div class="mini-block"><strong>What it is</strong><p>Converts fragmented private markets documents and operational data into curated, trusted, Alpha-ready intelligence.</p></div>
                 <div class="mini-block"><strong>Why it matters</strong><p>Private markets data sits across GP reports, capital calls, distribution notices, NAV statements, K-1s, Excel files, private credit loan tapes, valuation reports, and operational systems.</p></div>
-                <div class="mini-block detail-only"><strong>Demo story</strong><p>A private markets analyst uploads GP reports and capital call notices. AI extracts fund, GP, LP, NAV, unfunded commitment, capital call amount, distribution, IRR, TVPI, DPI, valuation date, and exposure, then flags exceptions and publishes approved data.</p></div>
-                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Faster onboarding, reduced manual work, better NAV and exposure visibility, improved reconciliation, faster reporting, and source traceability.</p></div>
+                <div class="mini-block"><strong>Demo story</strong><p>A private markets analyst uploads GP reports and capital call notices. AI extracts fund, GP, LP, NAV, unfunded commitment, capital call amount, distribution, IRR, TVPI, DPI, valuation date, and exposure, then flags exceptions and publishes approved data.</p></div>
+                <div class="mini-block"><strong>Business benefits</strong><p>Faster onboarding, reduced manual work, better NAV and exposure visibility, improved reconciliation, faster reporting, and source traceability.</p></div>
               </div>
               <div class="diagram" aria-label="Private Market Intelligence architecture">
                 <div class="flow">
@@ -969,8 +1019,8 @@
               <div class="content-grid">
                 <div class="mini-block"><strong>What it is</strong><p>A governed data product and semantic control layer for reusable, business-defined, AI-ready assets.</p></div>
                 <div class="mini-block"><strong>Why it matters</strong><p>AI fails when teams use different data, definitions, and logic. Data products and semantic definitions create trust and reuse.</p></div>
-                <div class="mini-block detail-only"><strong>Demo story</strong><p>User asks for exposure by asset class, strategy, geography, liquidity bucket, and client segment. The assistant uses approved products, definitions, entitlements, and lineage instead of querying random tables.</p></div>
-                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Common business language, trusted KPIs, faster analytics, reduced duplicate logic, better AI accuracy, and audit readiness.</p></div>
+                <div class="mini-block"><strong>Demo story</strong><p>User asks for exposure by asset class, strategy, geography, liquidity bucket, and client segment. The assistant uses approved products, definitions, entitlements, and lineage instead of querying random tables.</p></div>
+                <div class="mini-block"><strong>Business benefits</strong><p>Common business language, trusted KPIs, faster analytics, reduced duplicate logic, better AI accuracy, and audit readiness.</p></div>
               </div>
               <div class="diagram" aria-label="AI Data Products architecture">
                 <div class="flow">
@@ -994,8 +1044,8 @@
               <div class="content-grid">
                 <div class="mini-block"><strong>What it is</strong><p>Governance and observability control plane for GenAI, agentic AI, and ML.</p></div>
                 <div class="mini-block"><strong>Why it matters</strong><p>Financial services AI needs traceability, access control, source grounding, prompt logging, human approval, monitoring, and auditability.</p></div>
-                <div class="mini-block detail-only"><strong>Demo story</strong><p>User asks for a client-ready explanation of private markets exposure change. The assistant uses approved data, shows sources, logs prompt and response, highlights confidence, routes for approval, and stores the audit trail.</p></div>
-                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Safer AI adoption, lower hallucination risk, audit-ready AI, prompt and model monitoring, user trust, cost transparency, and scalable governance.</p></div>
+                <div class="mini-block"><strong>Demo story</strong><p>User asks for a client-ready explanation of private markets exposure change. The assistant uses approved data, shows sources, logs prompt and response, highlights confidence, routes for approval, and stores the audit trail.</p></div>
+                <div class="mini-block"><strong>Business benefits</strong><p>Safer AI adoption, lower hallucination risk, audit-ready AI, prompt and model monitoring, user trust, cost transparency, and scalable governance.</p></div>
               </div>
               <div class="diagram" aria-label="Governed AI architecture">
                 <div class="flow">
@@ -1019,8 +1069,8 @@
               <div class="content-grid">
                 <div class="mini-block"><strong>What it is</strong><p>Industrialized AI/ML lifecycle with assistant-driven model operations.</p></div>
                 <div class="mini-block"><strong>Why it matters</strong><p>AI/ML models need repeatable development, validation, deployment, monitoring, retraining, and governance.</p></div>
-                <div class="mini-block detail-only"><strong>Demo story</strong><p>A risk or investment operations model loses accuracy. ML Assistant detects feature drift, identifies impacted portfolios or processes, recommends retraining, and creates a model health summary.</p></div>
-                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Faster deployment, standardized governance, better reliability, early drift detection, faster root cause analysis, and reduced manual monitoring.</p></div>
+                <div class="mini-block"><strong>Demo story</strong><p>A risk or investment operations model loses accuracy. ML Assistant detects feature drift, identifies impacted portfolios or processes, recommends retraining, and creates a model health summary.</p></div>
+                <div class="mini-block"><strong>Business benefits</strong><p>Faster deployment, standardized governance, better reliability, early drift detection, faster root cause analysis, and reduced manual monitoring.</p></div>
               </div>
               <div class="diagram" aria-label="MLOps architecture">
                 <div class="flow">
