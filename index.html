@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Ready Alpha Data Platform | Wipro + Databricks POV for State Street</title>
+  <style>
+    :root {
+      --navy-950: #050b18;
+      --navy-900: #071326;
+      --navy-850: #0a1932;
+      --navy-800: #0e2242;
+      --ink: #f4f8ff;
+      --muted: #9fb2cd;
+      --soft: #cfdbec;
+      --line: rgba(171, 199, 233, 0.18);
+      --line-strong: rgba(171, 199, 233, 0.34);
+      --blue: #3ba7ff;
+      --cyan: #4ee4d8;
+      --green: #60d394;
+      --gold: #f4c95d;
+      --coral: #ff8a6a;
+      --violet: #a88cff;
+      --card: rgba(11, 29, 56, 0.76);
+      --card-2: rgba(16, 42, 77, 0.74);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius: 8px;
+      --max: 1240px;
+      --header-h: 76px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(59, 167, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(78, 228, 216, 0.11), transparent 28%),
+        linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 48%, #08101f 100%);
+      overflow-x: hidden;
+    }
+
+    body.presentation-mode .detail-only {
+      display: none !important;
+    }
+
+    body.presentation-mode .slide {
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--header-h);
+      border-bottom: 1px solid var(--line);
+      background: rgba(5, 11, 24, 0.86);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      width: min(var(--max), calc(100% - 32px));
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand {
+      min-width: 210px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 0.94rem;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav a {
+      flex: 0 0 auto;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      transition: 0.2s ease;
+    }
+
+    .nav a.active,
+    .nav a:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--line);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-pill {
+      min-width: 56px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--soft);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--soft);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .switch {
+      width: 42px;
+      height: 24px;
+      padding: 3px;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      background: rgba(255, 255, 255, 0.07);
+      transition: 0.2s ease;
+    }
+
+    .switch::after {
+      content: "";
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .toggle input:checked + .switch {
+      background: linear-gradient(135deg, rgba(59, 167, 255, 0.95), rgba(78, 228, 216, 0.95));
+    }
+
+    .toggle input:checked + .switch::after {
+      transform: translateX(18px);
+      background: #06101f;
+    }
+
+    main {
+      position: relative;
+    }
+
+    .slide {
+      min-height: calc(100vh - var(--header-h));
+      padding: 72px 0;
+      scroll-margin-top: var(--header-h);
+      border-bottom: 1px solid rgba(171, 199, 233, 0.08);
+    }
+
+    .slide-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 1080px;
+      font-size: clamp(2.8rem, 6.2vw, 6.8rem);
+      line-height: 0.96;
+    }
+
+    h2 {
+      max-width: 980px;
+      font-size: clamp(2.2rem, 4.4vw, 4.9rem);
+      line-height: 1;
+    }
+
+    h3 {
+      font-size: clamp(1.14rem, 1.4vw, 1.38rem);
+      line-height: 1.2;
+    }
+
+    .lead {
+      max-width: 1040px;
+      margin: 22px 0 0;
+      color: var(--soft);
+      font-size: clamp(1.08rem, 1.8vw, 1.55rem);
+      line-height: 1.45;
+    }
+
+    .executive-message {
+      margin: 28px 0;
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(78, 228, 216, 0.32);
+      background:
+        linear-gradient(135deg, rgba(78, 228, 216, 0.13), rgba(59, 167, 255, 0.08)),
+        rgba(8, 24, 45, 0.78);
+      box-shadow: var(--shadow);
+      color: #effcff;
+      font-size: clamp(1.05rem, 1.55vw, 1.35rem);
+      line-height: 1.48;
+    }
+
+    .statement {
+      border-left: 4px solid var(--cyan);
+      padding: 18px 22px;
+      margin: 22px 0 0;
+      color: #e8f7ff;
+      background: rgba(255, 255, 255, 0.055);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: clamp(1.02rem, 1.35vw, 1.22rem);
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card,
+    .talk-track,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .card {
+      min-height: 180px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--green));
+      opacity: 0.72;
+    }
+
+    .card p {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--cyan);
+      background: rgba(78, 228, 216, 0.08);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .talk-track {
+      margin-top: 28px;
+      padding: 20px 22px;
+      background:
+        linear-gradient(135deg, rgba(244, 201, 93, 0.12), rgba(78, 228, 216, 0.08)),
+        rgba(11, 29, 56, 0.72);
+    }
+
+    .talk-track h3 {
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.15rem;
+    }
+
+    li {
+      margin: 7px 0;
+      color: var(--soft);
+      line-height: 1.42;
+    }
+
+    .transition {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .state-box {
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .state-box strong {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--cyan);
+      font-size: 1.1rem;
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-size: 2rem;
+    }
+
+    .tabs-shell {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .tab-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: sticky;
+      top: calc(var(--header-h) + 16px);
+    }
+
+    .tab-button {
+      width: 100%;
+      padding: 15px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--soft);
+      background: rgba(255, 255, 255, 0.045);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .tab-button:hover,
+    .tab-button.active {
+      color: var(--ink);
+      border-color: rgba(78, 228, 216, 0.42);
+      background: linear-gradient(135deg, rgba(59, 167, 255, 0.16), rgba(78, 228, 216, 0.08));
+    }
+
+    .tab-panel {
+      display: none;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(8, 24, 45, 0.76);
+      box-shadow: var(--shadow);
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .mini-block {
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .mini-block strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--cyan);
+    }
+
+    .mini-block p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.48;
+    }
+
+    .diagram {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)),
+        rgba(5, 15, 30, 0.74);
+      overflow-x: auto;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(138px, 1fr));
+      gap: 12px;
+      min-width: 720px;
+      align-items: stretch;
+    }
+
+    .flow.step-6 {
+      grid-template-columns: repeat(6, minmax(132px, 1fr));
+      min-width: 880px;
+    }
+
+    .flow-box {
+      position: relative;
+      min-height: 88px;
+      padding: 15px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: var(--radius);
+      border: 1px solid rgba(78, 228, 216, 0.28);
+      background: rgba(16, 42, 77, 0.84);
+      color: #eef9ff;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .flow-box:not(:last-child)::after {
+      content: ">";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--cyan);
+      font-size: 1.1rem;
+      z-index: 2;
+    }
+
+    .layer-diagram {
+      margin-top: 32px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .layer {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(59, 167, 255, 0.12), rgba(255, 255, 255, 0.04));
+    }
+
+    .layer-title {
+      font-weight: 800;
+      color: #ffffff;
+      font-size: 1.08rem;
+    }
+
+    .layer-body {
+      color: var(--soft);
+      line-height: 1.48;
+    }
+
+    .cross-cut {
+      border-color: rgba(244, 201, 93, 0.42);
+      background: linear-gradient(90deg, rgba(244, 201, 93, 0.14), rgba(78, 228, 216, 0.06));
+    }
+
+    .timeline {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      counter-reset: phase;
+    }
+
+    .phase {
+      position: relative;
+      min-height: 250px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(11, 29, 56, 0.78);
+    }
+
+    .phase::before {
+      counter-increment: phase;
+      content: counter(phase);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #04101f;
+      font-weight: 900;
+    }
+
+    .phase h3 {
+      margin-bottom: 12px;
+    }
+
+    .question-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+      counter-reset: q;
+    }
+
+    .question {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--soft);
+      line-height: 1.42;
+    }
+
+    .question::before {
+      counter-increment: q;
+      content: counter(q);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(78, 228, 216, 0.14);
+      color: var(--cyan);
+      font-weight: 900;
+    }
+
+    .cta {
+      margin-top: 20px;
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(78, 228, 216, 0.38);
+      background: linear-gradient(135deg, rgba(59, 167, 255, 0.16), rgba(78, 228, 216, 0.1));
+    }
+
+    .cta strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #ffffff;
+      font-size: 1.15rem;
+    }
+
+    .slide-nav {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 45;
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      min-width: 104px;
+      padding: 12px 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(5, 11, 24, 0.82);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(14px);
+      transition: 0.2s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      border-color: rgba(78, 228, 216, 0.5);
+      background: rgba(10, 29, 56, 0.94);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 1020px) {
+      .topbar {
+        height: auto;
+      }
+
+      .topbar-inner {
+        min-height: var(--header-h);
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+
+      .brand {
+        min-width: 180px;
+      }
+
+      .controls {
+        margin-left: auto;
+      }
+
+      .grid-4,
+      .grid-3,
+      .timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .tabs-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .tab-list {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .layer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      :root {
+        --header-h: 112px;
+      }
+
+      .slide {
+        padding: 52px 0 84px;
+      }
+
+      .slide-inner {
+        width: min(100% - 28px, var(--max));
+      }
+
+      .nav {
+        order: 3;
+        flex-basis: 100%;
+      }
+
+      .toggle span:last-child {
+        display: none;
+      }
+
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .content-grid,
+      .timeline,
+      .question-list,
+      .transition,
+      .tab-list {
+        grid-template-columns: 1fr;
+      }
+
+      .transition .arrow {
+        transform: rotate(90deg);
+      }
+
+      .card {
+        min-height: auto;
+      }
+
+      .slide-nav {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+      }
+
+      .nav-btn {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#opening" aria-label="Go to opening">
+        <strong>AI-Ready Alpha</strong>
+        <span>Wipro + Databricks POV</span>
+      </a>
+      <nav class="nav" aria-label="Presentation sections">
+        <a href="#opening" class="active">Opening</a>
+        <a href="#summary">Executive Summary</a>
+        <a href="#why-now">Why Now</a>
+        <a href="#offerings">Offerings</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#roadmap">90-Day Roadmap</a>
+        <a href="#value">Business Value</a>
+        <a href="#discussion">CIO Discussion</a>
+      </nav>
+      <div class="controls">
+        <div class="progress-pill" id="progress">1 / 8</div>
+        <label class="toggle">
+          <input type="checkbox" id="presentationToggle" />
+          <span class="switch" aria-hidden="true"></span>
+          <span>Presentation Mode</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="slide" id="opening" data-title="Opening">
+      <div class="slide-inner">
+        <div class="eyebrow">Opening</div>
+        <h1>AI-Ready Alpha Data Platform: From Trusted Data to Governed Intelligence</h1>
+        <p class="lead">A Wipro + Databricks POV for State Street: accelerating Private Markets intelligence, AI-ready data products, governed GenAI, observability, MLOps, and digital investment experience around Alpha.</p>
+        <div class="grid grid-4">
+          <article class="card">
+            <span class="tag">Challenge</span>
+            <h3>Private Markets Complexity</h3>
+            <p>Documents, spreadsheets, GP reports, capital calls, NAV statements, private credit files, and operational exceptions.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Gap</span>
+            <h3>AI Readiness Gap</h3>
+            <p>Data foundations exist, but AI needs trusted data products, semantic definitions, lineage, and controls.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Target</span>
+            <h3>Governed Intelligence</h3>
+            <p>Every AI output should be traceable, explainable, monitored, and approved where needed.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Opportunity</span>
+            <h3>CIO Opportunity</h3>
+            <p>Move from AI pilots to scalable enterprise AI operating model.</p>
+          </article>
+        </div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>We are not replacing Alpha.</li>
+            <li>We are extending the data, AI, governance, and digital experience layer around Alpha.</li>
+            <li>Private Markets is a strong starting point.</li>
+            <li>Goal is trusted, observable intelligence, not disconnected AI experiments.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="summary" data-title="Executive Summary">
+      <div class="slide-inner">
+        <div class="eyebrow">Executive Summary</div>
+        <h2>Alpha is the strategic platform. The next wave is AI-ready, governed, reusable investment data.</h2>
+        <div class="executive-message">State Street has a strong strategic platform with Alpha. The next wave of value is making Alpha-related data and enterprise investment data more AI-ready, governed, reusable, and consumable through digital experiences.</div>
+        <div class="grid grid-4">
+          <article class="card">
+            <h3>Private Market Intelligence</h3>
+            <p>Convert GP reports, capital calls, NAV statements, private credit files, and spreadsheets into trusted Alpha-ready data products.</p>
+          </article>
+          <article class="card">
+            <h3>AI Data Products &amp; Semantic Layer</h3>
+            <p>Build reusable data products and approved business definitions for portfolio, risk, performance, private markets, and client reporting.</p>
+          </article>
+          <article class="card">
+            <h3>Governed AI &amp; Observability</h3>
+            <p>Make GenAI and agentic workflows explainable, auditable, monitored, policy-controlled, and enterprise-safe.</p>
+          </article>
+          <article class="card">
+            <h3>MLOps &amp; ML Assistant</h3>
+            <p>Industrialize ML lifecycle and enable assistants for model health, drift, data quality, and operations.</p>
+          </article>
+        </div>
+        <div class="statement">The objective is not AI experimentation. The objective is governed intelligence: every AI answer connects to trusted data, approved definitions, lineage, controls, monitoring, and human accountability.</div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>Alpha provides the strategic anchor; this POV focuses on the intelligence layer around it.</li>
+            <li>The value comes from reusable data products, approved definitions, and governed AI experiences.</li>
+            <li>Private Markets can prove the pattern because the pain is visible and high value.</li>
+            <li>The outcome is enterprise AI that can be explained, audited, and scaled.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="why-now" data-title="Why Now">
+      <div class="slide-inner">
+        <div class="eyebrow">Why Now</div>
+        <h2>Why Now: Alpha, Alternatives, Data, and AI Are Converging</h2>
+        <p class="lead detail-only">The market is moving from data modernization toward governed intelligence. That makes the control layer around data products, semantics, GenAI, and MLOps increasingly strategic.</p>
+        <div class="grid grid-4">
+          <article class="card">
+            <h3>Alternatives Growth</h3>
+            <p>Private markets are document-heavy, less standardized, and operationally complex.</p>
+          </article>
+          <article class="card">
+            <h3>Data Foundation Is Not Enough</h3>
+            <p>Business users need data products, consistent KPIs, ownership, quality, lineage, and semantic definitions.</p>
+          </article>
+          <article class="card">
+            <h3>GenAI Needs Controls</h3>
+            <p>Financial services requires access control, source grounding, prompt logging, policy checks, human approval, and auditability.</p>
+          </article>
+          <article class="card">
+            <h3>CIOs Need Scale, Not Pilots</h3>
+            <p>AI needs a repeatable operating model from demo to production.</p>
+          </article>
+        </div>
+        <div class="transition">
+          <div class="state-box">
+            <strong>Current State</strong>
+            Fragmented data, manual workflows, inconsistent definitions, AI pilots
+          </div>
+          <div class="arrow" aria-hidden="true">></div>
+          <div class="state-box">
+            <strong>Target State</strong>
+            Trusted data products, governed AI, observable models, digital investment experience
+          </div>
+        </div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>Alternatives growth is creating a data and operating model pressure point.</li>
+            <li>AI amplifies both the value of trusted data and the risk of inconsistent definitions.</li>
+            <li>Controls need to be designed into the platform, not added after pilots succeed.</li>
+            <li>The CIO opportunity is a repeatable path from use case to production capability.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="offerings" data-title="Strategic Offerings">
+      <div class="slide-inner">
+        <div class="eyebrow">Strategic Offerings</div>
+        <h2>Four integrated offerings to extend the Alpha ecosystem with governed intelligence</h2>
+        <p class="lead detail-only">Each offering can stand alone, but the strongest value comes when Private Markets, data products, AI governance, and MLOps reinforce each other as one operating model.</p>
+
+        <div class="tabs-shell">
+          <div class="tab-list" role="tablist" aria-label="Strategic offering tabs">
+            <button class="tab-button active" role="tab" aria-selected="true" data-tab="pm">Private Market Intelligence</button>
+            <button class="tab-button" role="tab" aria-selected="false" data-tab="semantic">AI Data Products &amp; Semantic Layer</button>
+            <button class="tab-button" role="tab" aria-selected="false" data-tab="governed">Governed AI &amp; Observability</button>
+            <button class="tab-button" role="tab" aria-selected="false" data-tab="mlops">MLOps &amp; ML Assistant</button>
+          </div>
+
+          <div>
+            <article class="tab-panel active" id="tab-pm" role="tabpanel">
+              <h3>Private Market Intelligence</h3>
+              <div class="content-grid">
+                <div class="mini-block"><strong>What it is</strong><p>Converts fragmented private markets documents and operational data into curated, trusted, Alpha-ready intelligence.</p></div>
+                <div class="mini-block"><strong>Why it matters</strong><p>Private markets data sits across GP reports, capital calls, distribution notices, NAV statements, K-1s, Excel files, private credit loan tapes, valuation reports, and operational systems.</p></div>
+                <div class="mini-block detail-only"><strong>Demo story</strong><p>A private markets analyst uploads GP reports and capital call notices. AI extracts fund, GP, LP, NAV, unfunded commitment, capital call amount, distribution, IRR, TVPI, DPI, valuation date, and exposure, then flags exceptions and publishes approved data.</p></div>
+                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Faster onboarding, reduced manual work, better NAV and exposure visibility, improved reconciliation, faster reporting, and source traceability.</p></div>
+              </div>
+              <div class="diagram" aria-label="Private Market Intelligence architecture">
+                <div class="flow">
+                  <div class="flow-box">Sources</div>
+                  <div class="flow-box">Ingestion &amp; Extraction</div>
+                  <div class="flow-box">Validation &amp; Review</div>
+                  <div class="flow-box">Private Markets Data Products</div>
+                  <div class="flow-box">Alpha / BI / GenAI / Reporting</div>
+                </div>
+              </div>
+              <div class="content-grid detail-only">
+                <div class="mini-block"><strong>Wipro approach</strong><p>Select workflow, assess docs, define canonical model, build extraction, add DQ and review, publish data product, enable dashboard or assistant, then scale.</p></div>
+                <div class="mini-block"><strong>Databricks capabilities</strong><p>Delta Lake, Unity Catalog, Auto Loader, Workflows, Mosaic AI, Vector Search, MLflow, Lakehouse Monitoring.</p></div>
+                <div class="mini-block"><strong>CIO talking points</strong><p>Private Markets is document-heavy and high-value. The focus is trusted extraction with confidence, lineage, and approval.</p></div>
+                <div class="mini-block"><strong>Prompt example</strong><p>Show funds with declining NAV, high unfunded commitment, and CRE exposure.</p></div>
+              </div>
+            </article>
+
+            <article class="tab-panel" id="tab-semantic" role="tabpanel">
+              <h3>AI Data Products &amp; Semantic Layer</h3>
+              <div class="content-grid">
+                <div class="mini-block"><strong>What it is</strong><p>A governed data product and semantic control layer for reusable, business-defined, AI-ready assets.</p></div>
+                <div class="mini-block"><strong>Why it matters</strong><p>AI fails when teams use different data, definitions, and logic. Data products and semantic definitions create trust and reuse.</p></div>
+                <div class="mini-block detail-only"><strong>Demo story</strong><p>User asks for exposure by asset class, strategy, geography, liquidity bucket, and client segment. The assistant uses approved products, definitions, entitlements, and lineage instead of querying random tables.</p></div>
+                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Common business language, trusted KPIs, faster analytics, reduced duplicate logic, better AI accuracy, and audit readiness.</p></div>
+              </div>
+              <div class="diagram" aria-label="AI Data Products architecture">
+                <div class="flow">
+                  <div class="flow-box">Source Data</div>
+                  <div class="flow-box">Lakehouse Foundation</div>
+                  <div class="flow-box">Data Product Layer</div>
+                  <div class="flow-box">Semantic Layer</div>
+                  <div class="flow-box">BI / GenAI / APIs / Alpha Apps</div>
+                </div>
+              </div>
+              <div class="content-grid detail-only">
+                <div class="mini-block"><strong>Wipro approach</strong><p>Identify domains, define data products, assign owners and SLAs, build curated products, define KPI catalog, implement governance, enable BI and AI, scale marketplace.</p></div>
+                <div class="mini-block"><strong>Databricks capabilities</strong><p>Delta Lake, Unity Catalog, Delta Sharing, Databricks SQL, Lakehouse Federation, Workflows, Vector Search, Mosaic AI, MLflow.</p></div>
+                <div class="mini-block"><strong>CIO talking points</strong><p>AI readiness needs business-ready data products and approved semantic definitions. The semantic layer controls how AI answers business questions.</p></div>
+                <div class="mini-block"><strong>Prompt example</strong><p>What is exposure by asset class, strategy, geography, liquidity bucket, and client segment?</p></div>
+              </div>
+            </article>
+
+            <article class="tab-panel" id="tab-governed" role="tabpanel">
+              <h3>Governed AI &amp; Observability</h3>
+              <div class="content-grid">
+                <div class="mini-block"><strong>What it is</strong><p>Governance and observability control plane for GenAI, agentic AI, and ML.</p></div>
+                <div class="mini-block"><strong>Why it matters</strong><p>Financial services AI needs traceability, access control, source grounding, prompt logging, human approval, monitoring, and auditability.</p></div>
+                <div class="mini-block detail-only"><strong>Demo story</strong><p>User asks for a client-ready explanation of private markets exposure change. The assistant uses approved data, shows sources, logs prompt and response, highlights confidence, routes for approval, and stores the audit trail.</p></div>
+                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Safer AI adoption, lower hallucination risk, audit-ready AI, prompt and model monitoring, user trust, cost transparency, and scalable governance.</p></div>
+              </div>
+              <div class="diagram" aria-label="Governed AI architecture">
+                <div class="flow">
+                  <div class="flow-box">User Channels</div>
+                  <div class="flow-box">AI Gateway &amp; Policy Layer</div>
+                  <div class="flow-box">Retrieval / Data Access</div>
+                  <div class="flow-box">AI Execution</div>
+                  <div class="flow-box">Observability &amp; Audit</div>
+                </div>
+              </div>
+              <div class="content-grid detail-only">
+                <div class="mini-block"><strong>Wipro approach</strong><p>Define risk tiers, identify controls, define metrics, implement gateway and policies, monitor prompts and responses, add feedback and approval, integrate registry and audit, operationalize governance.</p></div>
+                <div class="mini-block"><strong>Databricks capabilities</strong><p>Unity Catalog, MLflow Registry, Mosaic AI Gateway, Lakehouse Monitoring, Model Serving, Vector Search, Workflows, Audit Logs.</p></div>
+                <div class="mini-block"><strong>CIO talking points</strong><p>AI governance should scale innovation safely. Every AI answer should be traceable to source, policy, prompt, model, and approval.</p></div>
+                <div class="mini-block"><strong>Prompt example</strong><p>Generate a client-ready explanation for why private markets exposure changed this quarter.</p></div>
+              </div>
+            </article>
+
+            <article class="tab-panel" id="tab-mlops" role="tabpanel">
+              <h3>MLOps &amp; ML Assistant</h3>
+              <div class="content-grid">
+                <div class="mini-block"><strong>What it is</strong><p>Industrialized AI/ML lifecycle with assistant-driven model operations.</p></div>
+                <div class="mini-block"><strong>Why it matters</strong><p>AI/ML models need repeatable development, validation, deployment, monitoring, retraining, and governance.</p></div>
+                <div class="mini-block detail-only"><strong>Demo story</strong><p>A risk or investment operations model loses accuracy. ML Assistant detects feature drift, identifies impacted portfolios or processes, recommends retraining, and creates a model health summary.</p></div>
+                <div class="mini-block detail-only"><strong>Business benefits</strong><p>Faster deployment, standardized governance, better reliability, early drift detection, faster root cause analysis, and reduced manual monitoring.</p></div>
+              </div>
+              <div class="diagram" aria-label="MLOps architecture">
+                <div class="flow">
+                  <div class="flow-box">Data Foundation</div>
+                  <div class="flow-box">ML Development</div>
+                  <div class="flow-box">MLOps Pipeline</div>
+                  <div class="flow-box">Model Serving</div>
+                  <div class="flow-box">Monitoring &amp; ML Assistant</div>
+                </div>
+              </div>
+              <div class="content-grid detail-only">
+                <div class="mini-block"><strong>Wipro approach</strong><p>Assess maturity, define MLOps architecture, set validation standards, build pipelines, implement registry and approval, add monitoring, build ML Assistant, scale.</p></div>
+                <div class="mini-block"><strong>Databricks capabilities</strong><p>MLflow, Feature Engineering, Model Registry, Model Serving, Workflows, Lakehouse Monitoring, Unity Catalog, Asset Bundles, Mosaic AI.</p></div>
+                <div class="mini-block"><strong>CIO talking points</strong><p>MLOps moves AI from pilots to production. ML Assistant gives leadership visibility into model health, drift, retraining, and business impact.</p></div>
+                <div class="mini-block"><strong>Operating signal</strong><p>Leadership can see model health, data drift, business impact, approval status, and retraining readiness in one place.</p></div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>These offerings are modular but mutually reinforcing.</li>
+            <li>Private Markets creates a tangible workflow where documents become trusted data products.</li>
+            <li>The semantic and governance layers make AI outputs explainable and reusable.</li>
+            <li>MLOps provides the operating discipline to move from pilots to production.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="architecture" data-title="Integrated Architecture">
+      <div class="slide-inner">
+        <div class="eyebrow">Integrated Architecture</div>
+        <h2>A layered architecture for trusted data, governed AI, and digital investment experience</h2>
+        <div class="layer-diagram">
+          <div class="layer">
+            <div class="layer-title">Source Systems</div>
+            <div class="layer-body">Alpha data, portfolio, accounting, risk, performance, market/reference data, private market documents, GP reports, Excel files, operational workflows.</div>
+          </div>
+          <div class="layer">
+            <div class="layer-title">Lakehouse Foundation</div>
+            <div class="layer-body">Ingestion, bronze/silver/gold, Delta Lake, streaming/batch, data quality, reconciliation.</div>
+          </div>
+          <div class="layer">
+            <div class="layer-title">Data Product &amp; Semantic Layer</div>
+            <div class="layer-body">Portfolio, private markets, risk, performance, client reporting data products, business glossary, KPI catalog.</div>
+          </div>
+          <div class="layer">
+            <div class="layer-title">AI / ML Layer</div>
+            <div class="layer-body">GenAI assistant, RAG, agents, ML models, ML Assistant, feature engineering, model serving.</div>
+          </div>
+          <div class="layer cross-cut">
+            <div class="layer-title">Governance &amp; Observability</div>
+            <div class="layer-body">Unity Catalog, lineage, access controls, prompt monitoring, model monitoring, drift, audit logs, human approval.</div>
+          </div>
+          <div class="layer">
+            <div class="layer-title">Consumption &amp; Digital Experience</div>
+            <div class="layer-body">Alpha integration, BI, CIO dashboards, client reporting, investment operations assistant, risk analytics, data marketplace.</div>
+          </div>
+        </div>
+        <div class="diagram detail-only" aria-label="Integrated architecture flow">
+          <div class="flow step-6">
+            <div class="flow-box">Sources</div>
+            <div class="flow-box">Lakehouse</div>
+            <div class="flow-box">Data Products</div>
+            <div class="flow-box">Semantic Layer</div>
+            <div class="flow-box">AI / ML</div>
+            <div class="flow-box">Digital Experience</div>
+          </div>
+        </div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>Trusted data first, then semantics, AI/ML, governance, and digital experience.</li>
+            <li>Governance cuts across every layer.</li>
+            <li>Start with Private Markets, then scale to risk, performance, reporting, and operations.</li>
+            <li>The architecture extends Alpha by making adjacent data and AI experiences reusable and controlled.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="roadmap" data-title="90-Day Roadmap">
+      <div class="slide-inner">
+        <div class="eyebrow">90-Day Roadmap</div>
+        <h2>Start narrow, prove value, and leave behind a production-scale roadmap</h2>
+        <div class="timeline">
+          <article class="phase">
+            <h3>Weeks 1-2: Align &amp; Prioritize</h3>
+            <ul>
+              <li>Use case selection</li>
+              <li>Scope and sources</li>
+              <li>Architecture constraints</li>
+              <li>Success criteria</li>
+            </ul>
+          </article>
+          <article class="phase">
+            <h3>Weeks 3-5: Design &amp; Build Foundation</h3>
+            <ul>
+              <li>Ingestion</li>
+              <li>Canonical model</li>
+              <li>Initial data products</li>
+              <li>Semantic metrics and controls</li>
+            </ul>
+          </article>
+          <article class="phase">
+            <h3>Weeks 6-8: Build AI Experience</h3>
+            <ul>
+              <li>Document extraction</li>
+              <li>GenAI assistant</li>
+              <li>Governed retrieval</li>
+              <li>Prompt logging and observability</li>
+            </ul>
+          </article>
+          <article class="phase">
+            <h3>Weeks 9-12: Validate &amp; Scale Plan</h3>
+            <ul>
+              <li>Business testing</li>
+              <li>Governance validation</li>
+              <li>Accuracy measurement</li>
+              <li>Business case and scale roadmap</li>
+            </ul>
+          </article>
+        </div>
+        <div class="statement detail-only">90 days should produce a working demo, reference architecture, business case, operating model input, and an implementation backlog for the next release cycle.</div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>Start narrow, prove value, then scale.</li>
+            <li>90 days should produce demo, architecture, business case, and implementation backlog.</li>
+            <li>The pilot should validate both business value and control readiness.</li>
+            <li>The output is a practical scale plan, not only a proof of concept.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="value" data-title="Business Value">
+      <div class="slide-inner">
+        <div class="eyebrow">Business Value</div>
+        <h2>Value is measured across technology control, business speed, data reuse, and AI assurance</h2>
+        <div class="grid grid-4">
+          <article class="card">
+            <span class="tag">CIO / Technology</span>
+            <h3>Scalable AI Architecture</h3>
+            <p>Scalable AI architecture, reduced fragmentation, better governance, control over AI risk/cost/adoption, roadmap to production.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Business / Operations</span>
+            <h3>Faster Operating Flow</h3>
+            <p>Faster private markets onboarding, less manual processing, better exception management, faster reporting.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Data &amp; Analytics</span>
+            <h3>Reusable Data Products</h3>
+            <p>Reusable data products, consistent definitions, faster delivery, better lineage and quality.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Risk / Compliance</span>
+            <h3>Audit-Ready AI</h3>
+            <p>AI audit trail, approval workflows, model monitoring, policy controls, explainable AI.</p>
+          </article>
+        </div>
+        <div class="diagram detail-only" aria-label="Business value flywheel">
+          <div class="flow">
+            <div class="flow-box">Trusted Data</div>
+            <div class="flow-box">Reusable Semantics</div>
+            <div class="flow-box">Governed AI</div>
+            <div class="flow-box">Operational Adoption</div>
+            <div class="flow-box">Measured Business Value</div>
+          </div>
+        </div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>The value case is not only efficiency; it is also control, reuse, and adoption readiness.</li>
+            <li>Business teams gain faster onboarding, reporting, and exception handling.</li>
+            <li>Data teams gain reusable products and standard definitions.</li>
+            <li>Risk and compliance gain audit trails, monitoring, and approval workflows.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide" id="discussion" data-title="CIO Discussion">
+      <div class="slide-inner">
+        <div class="eyebrow">CIO Discussion</div>
+        <h2>Discussion: choose the highest-value pilot and the controls needed to scale</h2>
+        <div class="question-list">
+          <div class="question">Where is the biggest data friction across Alpha, Alternatives, and Private Markets?</div>
+          <div class="question">Which workflows are document-heavy, manual, or exception-driven?</div>
+          <div class="question">Where would trusted AI assistants create most value?</div>
+          <div class="question">What governance and observability are needed before GenAI can scale?</div>
+          <div class="question">Are data products and semantic definitions standardized today?</div>
+          <div class="question">Which ML models are in production, and how are they monitored?</div>
+          <div class="question">What would a meaningful 90-day pilot look like?</div>
+        </div>
+        <div class="statement">Start with a focused Private Markets Intelligence pilot, supported by AI-ready data products, semantic definitions, governed AI observability, and scalable MLOps.</div>
+        <div class="cta">
+          <strong>Proposed Next Step:</strong>
+          Run a 2-hour working session to select the pilot workflow, confirm data sources, align governance requirements, and define the 90-day demo scope.
+        </div>
+        <aside class="talk-track">
+          <h3>Suggested Talk Track</h3>
+          <ul>
+            <li>The goal of this conversation is to select a focused pilot with measurable business value.</li>
+            <li>We should align the workflow, data sources, control requirements, and demo scope together.</li>
+            <li>Private Markets Intelligence is a strong candidate because it combines document complexity, data quality, and AI governance.</li>
+            <li>A 2-hour working session can turn this POV into a concrete 90-day plan.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="slide-nav" aria-label="Slide navigation">
+    <button class="nav-btn" id="prevBtn" type="button">Previous</button>
+    <button class="nav-btn" id="nextBtn" type="button">Next</button>
+  </div>
+
+  <script>
+    const sections = Array.from(document.querySelectorAll(".slide"));
+    const navLinks = Array.from(document.querySelectorAll(".nav a"));
+    const progress = document.getElementById("progress");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const presentationToggle = document.getElementById("presentationToggle");
+    const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
+    const tabPanels = Array.from(document.querySelectorAll(".tab-panel"));
+    let currentIndex = 0;
+
+    function sectionOffset(section) {
+      const headerHeight = document.querySelector(".topbar").offsetHeight;
+      return section.getBoundingClientRect().top + window.scrollY - headerHeight + 1;
+    }
+
+    function goTo(index) {
+      const targetIndex = Math.max(0, Math.min(sections.length - 1, index));
+      window.scrollTo({
+        top: sectionOffset(sections[targetIndex]),
+        behavior: "smooth"
+      });
+      updateState(targetIndex);
+    }
+
+    function updateState(index) {
+      currentIndex = index;
+      progress.textContent = `${index + 1} / ${sections.length}`;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === sections.length - 1;
+      navLinks.forEach((link, linkIndex) => {
+        link.classList.toggle("active", linkIndex === index);
+      });
+    }
+
+    function detectCurrentSection() {
+      const viewportPoint = window.scrollY + document.querySelector(".topbar").offsetHeight + 120;
+      let active = 0;
+      sections.forEach((section, index) => {
+        if (section.offsetTop <= viewportPoint) {
+          active = index;
+        }
+      });
+      updateState(active);
+    }
+
+    navLinks.forEach((link, index) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo(index);
+      });
+    });
+
+    prevBtn.addEventListener("click", () => goTo(currentIndex - 1));
+    nextBtn.addEventListener("click", () => goTo(currentIndex + 1));
+
+    presentationToggle.addEventListener("change", () => {
+      document.body.classList.toggle("presentation-mode", presentationToggle.checked);
+      setTimeout(() => goTo(currentIndex), 50);
+    });
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.tab;
+        tabButtons.forEach((tab) => {
+          const active = tab === button;
+          tab.classList.toggle("active", active);
+          tab.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        tabPanels.forEach((panel) => {
+          panel.classList.toggle("active", panel.id === `tab-${id}`);
+        });
+      });
+    });
+
+    window.addEventListener("scroll", () => {
+      window.requestAnimationFrame(detectCurrentSection);
+    }, { passive: true });
+
+    window.addEventListener("resize", detectCurrentSection);
+
+    document.addEventListener("keydown", (event) => {
+      const tag = document.activeElement.tagName.toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") {
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goTo(currentIndex + 1);
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goTo(currentIndex - 1);
+      }
+
+      if (/^[1-8]$/.test(event.key)) {
+        event.preventDefault();
+        goTo(Number(event.key) - 1);
+      }
+    });
+
+    updateState(0);
+  </script>
+</body>
+</html>
